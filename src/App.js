@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import axios from 'axios';
+import {useState} from 'react';
 import './App.css';
 
 function App() {
+  // CREATE STATE VARIABLE
+  const [pokemons, setPokemons] = useState([])
+
+  // FUNCTION FOR ONCLICK EVENT, FETCH API?
+  const catchEmAll = () => {
+    axios.get("https://pokeapi.co/api/v2/pokemon")
+    .then(jsonResult => {
+      //AXIOS RETURNS RESULTS WRAPPED IN 'DATA'
+      console.log(jsonResult.data.results)
+      setPokemons(jsonResult.data.results)
+    })
+    .catch(error => console.log(error))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h4>Catch Pokemon</h4>
+      <button onClick={catchEmAll}>Throw the Pokeballs</button>
+      {/* <hr/>
+      {JSON.stringify(pokemons)} */}
+      <hr/>
+      <ul>
+        {
+          pokemons.map( (pokemon, idx) => {
+            return (
+            <li key={idx}>{pokemon.name}</li>
+            )
+          })
+        }
+      </ul>
     </div>
   );
 }
